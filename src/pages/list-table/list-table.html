@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Mesas</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h4 *ngIf="loading">Loading...</h4>
+  
+  <ion-list *ngIf="!loading">
+    <ion-item *ngFor="let table of allTables">
+      <!-- <ion-icon name="beer" item-start small ></ion-icon> -->
+      <ion-thumbnail item-start>
+        <img src="{{table.picture}}" />
+      </ion-thumbnail>
+      {{ table.name }}
+      <ion-icon name="remove-circle" item-end (click)="deleteBeer(table)"></ion-icon>
+      <ion-icon name="add-circle" item-end (click)="addBeer(table)"></ion-icon>
+      <ion-icon name="close-circle" item-end (click)="closeTable(table)"></ion-icon>
+      <p> Cervezas: <strong>{{ table.beerCount }}</strong></p>
+    </ion-item>
+  </ion-list>
+</ion-content>
