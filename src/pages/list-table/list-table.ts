@@ -142,10 +142,12 @@ const querySubscription = allTablesQuery.valueChanges.subscribe((response) => {
   }
 
   addBeer(table){
+    console.log("Agregando cerveza");
     this.ts.updateBeers(table.id,table.beerCount+1);
   }
 
   deleteBeer(table){
+    console.log("Quitando cerveza");
     this.ts.updateBeers(table.id,table.beerCount-1);
   }
 
