@@ -93,12 +93,13 @@ export class ListTablePage {
         console.log(subscriptionData);
         if ((<any>subscriptionData).data.Table) {
           console.log("mesa eliminada", (<any>subscriptionData).data);
-          let index = this.allTables.findIndex(x=> x.id === (<any>subscriptionData).data.Table.node.id)
-          let newAllTables;
+          let index = this.allTables.findIndex(x=> x.id === (<any>subscriptionData).data.Table.previousValues.id)
+          let newAllTables = [...this.allTables];
           console.log("index", index);
           if(index !== -1){
-            newAllTables = this.allTables.splice(index,1);
+            newAllTables.splice(index,1);
           }
+          console.log("New all tables",newAllTables);
           return {
             ...previous,
             allTables: newAllTables
@@ -153,6 +154,11 @@ const querySubscription = allTablesQuery.valueChanges.subscribe((response) => {
 
   closeTable(table){
     this.ts.closeTable(table.id);
+  }
+
+  deleteAll() {
+    this.ts.deleteAll(this.allTables);
+    // this.allTables = [];
   }
 
 }

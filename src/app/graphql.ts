@@ -25,6 +25,7 @@ export const ALL_TABLES_QUERY = gql`
       name
       beerCount
       picture
+      qrID
       users {
         id
       }
@@ -225,6 +226,8 @@ export const NEW_TABLE_SUBSCRIPTION = gql`
         id
         name
         beerCount
+        qrID
+        picture
         users {
           id
         }
@@ -246,6 +249,8 @@ export const UPDATE_TABLE_SUBSCRIPTION = gql`
         id
         name
         beerCount
+        qrID
+        picture
         users {
           id
         }
@@ -270,6 +275,8 @@ export const UPDATE_USER_TABLE_SUBSCRIPTION = gql`
         id
         name
         beerCount
+        qrID
+        picture
         users {
           id
           name
@@ -304,10 +311,22 @@ export const DELETE_TABLE_SUBSCRIPTION = gql`
     Table(filter: {
       mutation_in : [DELETED]
     }) {
-      node {
-        id
-        name
-      }
+      mutation
+    	previousValues {
+      	id
+   		}
     }
   }
-`;
+  `;
+
+export const CLOSE_TABLE_MUTATION = gql`
+  mutation closeTable($id: ID!) {
+    updateTable(
+      id: $id,
+      qrID: null
+    )
+    {
+      id
+    }
+  }
+`

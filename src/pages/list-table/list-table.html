@@ -1,7 +1,15 @@
 <ion-header>
 
   <ion-navbar color= "#212121">
-    <ion-title text-center>Mesas</ion-title>
+    <button ion-button menuToggle color="light">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Mesas</ion-title>
+    <ion-buttons end> 
+      <button ion-button icon-only color="light" (click)="deleteAll()" end>
+        <ion-icon name="repeat"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -29,9 +37,9 @@
     <ion-list>
       <ion-item no-lines *ngFor="let table of allTables">
         <mark>{{table.name}}</mark>
-        <ion-icon name="remove-circle" item-end (click)="deleteBeer(table)"></ion-icon>
-        <ion-icon name="add-circle" item-end (click)="addBeer(table)"></ion-icon>
-        <ion-icon name="close-circle" item-end (click)="closeTable(table)"></ion-icon>
+        <ion-icon name="remove-circle" item-end (click)="deleteBeer(table)" *ngIf="table.qrID"></ion-icon>
+        <ion-icon name="add-circle" item-end (click)="addBeer(table)" *ngIf="table.qrID"></ion-icon>
+        <ion-icon name="key" item-end (click)="closeTable(table)" *ngIf="table.qrID"></ion-icon>
         <p> Cervezas: <strong>{{ table.beerCount }}</strong></p>
       </ion-item>
     </ion-list>

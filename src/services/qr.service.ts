@@ -15,7 +15,8 @@ export class QRService {
         mutation: CREATE_QR_MUTATION,
         variables: {
           description: description
-        }
+        },
+        refetchQueries: ['TableQRQuery']
       }).subscribe((response)=>{
         console.log(response);
         resolve(1);

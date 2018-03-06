@@ -21,6 +21,7 @@ export interface PageInterface {
   badge?: boolean;
   logsOut?: boolean;
   validate?:boolean;
+  reset? :boolean;
 }
 
 @Component({
@@ -35,26 +36,26 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   appPages: PageInterface[] = [
-    {
-      title: 'Home', description: 'Ver el Pagina Inicial',
-      component: ListTablePage, icon: 'coop-usuario'
-    },
-    {
-      title: 'List', description: 'Ver el Listas',
-      component: ListPage, icon: 'coop-usuario'
-    },
+    // {
+    //   title: 'List', description: 'Ver el Listas',
+    //   component: ListPage, icon: 'person'
+    // },
     {
       title: 'Lista de Mesas', description: 'Ver las mesas',
-      component: ListTablePage, icon: 'coop-usuario'
+      component: ListTablePage, icon: 'trophy'
     },
     {
       title: 'Registrar QR', description: 'Registrar un nuevo QR',
-      component: RegisterQrPage, icon: 'coop-usuario'
+      component: RegisterQrPage, icon: 'create'
     },
-    {
-      title: 'Salir', description: 'Salir de la aplicaci\u00f3n',
-      component: LoginPage, icon: 'coop-exit', logsOut: true
-    },
+    // {
+    //   title: 'Cerrar dia', description: 'Eliminar todas las mesas',
+    //   component: ListTablePage, icon: 'refresh', reset: true
+    // },
+    // {
+    //   title: 'Salir', description: 'Salir de la aplicaci\u00f3n',
+    //   component: LoginPage, icon: 'exit', logsOut: true
+    // },
   ];
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
@@ -67,15 +68,15 @@ export class MyApp {
     
     this.mozosService.isLoggedIn().then((loggedIn) => {
       platform.ready().then(() => {
-        if(loggedIn) {
+        // if(loggedIn) {
           // this.mozosService.hasWaiter().then((user) => {
           //   this.user = user;
           // });
           this.rootPage = ListTablePage;
-        } else {
-          this.menuCtrl.enable(false);
-          this.rootPage = LoginPage;
-        }
+        // } else {
+        //   this.menuCtrl.enable(false);
+        //   this.rootPage = LoginPage;
+        // }
 
         setTimeout(() => { this.splashScreen.hide(); }, 2000);
       });
@@ -117,4 +118,5 @@ export class MyApp {
       }).catch(() => {});
     });
   }
+
 }
