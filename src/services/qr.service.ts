@@ -9,12 +9,13 @@ export class QRService {
   constructor(private apollo: Apollo) {
   }
 
-  register(description){
+  register(description, tableNumber){
   	return new Promise((resolve, reject)=>{
       this.apollo.mutate({
         mutation: CREATE_QR_MUTATION,
         variables: {
-          description: description
+          description: description,
+          nroMesa: tableNumber
         },
         refetchQueries: ['TableQRQuery']
       }).subscribe((response)=>{

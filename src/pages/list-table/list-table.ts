@@ -7,6 +7,8 @@ import { CREATE_TABLE_MUTATION, ALL_TABLES_QUERY, TABLE_QR_QUERY, JOIN_TABLE_MUT
         NEW_TABLE_SUBSCRIPTION, UPDATE_TABLE_SUBSCRIPTION,AllTableQueryResponse, 
         DELETE_TABLE_SUBSCRIPTION } from '../../app/graphql';
 import {Subscription} from 'rxjs/Subscription';
+import { AlertController } from 'ionic-angular';
+
 
 
 @IonicPage()
@@ -17,6 +19,7 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class ListTablePage {
   public allTables: Table[] = [];
+  public activeTables: Table[] = [];
   public loading: boolean = true;
   shownTable: Table;
   subscriptions: Subscription[] = [];
@@ -24,8 +27,9 @@ export class ListTablePage {
   orderType = 'NONE';
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private ts: TableService, private apollo: Apollo) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams, private ts: TableService, private apollo: Apollo,
+              private alertCtrl: AlertController
+             ){
   }
 
   ionViewDidLoad() {
@@ -33,6 +37,7 @@ export class ListTablePage {
       let bar = <any>{ response };
       // console.log(bar);
       this.allTables = bar.response.data.allTables;
+      console.log("mesas", this.allTables);
       this.loading = false;
     });
 
@@ -50,10 +55,12 @@ export class ListTablePage {
             (<any>subscriptionData).data.Table.node,
             ...previous.allTables
             ];
-            newAllTables = this.sort(newAllTables);
+            // newAllTables = this.sort(newAllTables);
+          //newAllTables = newAllTables.filter(table => table.qrID != null );
           return {
             ...previous,
-            allTables: newAllTables
+            allTables: newAllTables,
+            //activeTables: newAllTables
           }
         }
         else {
@@ -73,10 +80,14 @@ export class ListTablePage {
           let newAllTables = [
             ...previous.allTables
           ]
-          newAllTables = this.sort(newAllTables);
+          //newAllTables = this.sort(newAllTables);
+
+          //let newActiveTables = newAllTables.filter(table => table.qrID != null );
+          
           return {
             ...previous,
-            allTables: newAllTables
+            allTables: newAllTables,
+            //activeTables: newActiveTables
           }
         }
         else {
@@ -102,7 +113,8 @@ export class ListTablePage {
           console.log("New all tables",newAllTables);
           return {
             ...previous,
-            allTables: newAllTables
+            allTables: newAllTables,
+            //activeTables: newAllTables
           }
         }
         else {
@@ -118,6 +130,7 @@ export class ListTablePage {
 const querySubscription = allTablesQuery.valueChanges.subscribe((response) => {
   this.allTables = response.data.allTables;
   this.loading = response.data.loading;
+  this.activeTables = response.data.allTables.filter(table => table.qrID != null );
 });
 
   this.subscriptions = [...this.subscriptions, querySubscription];
@@ -142,10 +155,11 @@ const querySubscription = allTablesQuery.valueChanges.subscribe((response) => {
     return tables;
   }
 
-  addBeer(table){
-    console.log("Agregando cerveza");
-    this.ts.updateBeers(table.id,table.beerCount+1);
-  }
+  // addBeer(table){
+  //   console.log("Agregando cerveza");
+  //   let cant = this.presentPrompt();
+  //   console.log("cant", cant);
+  // }
 
   deleteBeer(table){
     console.log("Quitando cerveza");
@@ -157,8 +171,44 @@ const querySubscription = allTablesQuery.valueChanges.subscribe((response) => {
   }
 
   deleteAll() {
+    let mesas = [
+      ...this.allTables
+    ]
+    mesas = this.sort(mesas);
+    this.ts.createWinner(mesas[0]);
     this.ts.deleteAll(this.allTables);
     // this.allTables = [];
+  }
+
+  addBeer(table) {
+    let alert = this.alertCtrl.create({
+      title: 'Agregar',
+      inputs: [
+        {
+          name: 'cantidad',
+          placeholder: 'Cantidad',
+          type:'number'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: data => {
+            console.log(data);
+            this.ts.updateBeers(table.id,table.beerCount+Number(data.cantidad));
+            //return data;
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

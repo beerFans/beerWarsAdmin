@@ -1,5 +1,18 @@
 page-register-qr {
-	ion-content {
+
+  	//font-family: 'Open Sans', sans-serif;  
+    ion-content {
+      background: linear-gradient(to bottom, #3a404d, #181c26);
+    }
+    .toolbar-background { background-color: #263238 !important; }
+    .toolbar-title {
+        color: white;
+    }
+    .button-inner {
+    	color: white;
+    }
+
+    ion-item{
     	background: transparent !important;
-  	}
+    }
 }

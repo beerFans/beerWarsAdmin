@@ -24,6 +24,7 @@ export class Table {
   qrID?: string;
   waiter?: Waiter;
   users?: User[];
+  numero?: number;
 
 }
 

@@ -20,7 +20,7 @@ export class RegisterQrPage {
     console.log('ionViewDidLoad RegisterQrPage');
   }
 
-  register(){
+  register(tableNumber){
   	var ionApp = <HTMLElement>document.getElementsByTagName("ion-app")[0];
 
     console.log('Preparando escaneo'); //Esto deberia encargarse de escanear el codigo y retornar el id
@@ -33,7 +33,7 @@ export class RegisterQrPage {
           let scanSub = this.qrScanner.scan().subscribe((text: string) => {
             console.log("qr escaneado:", text);
 
-            this.Qr.register(text).then((data)=>{
+            this.Qr.register(text,tableNumber).then((data)=>{
               console.log(data)
               if (data === 1) {
                 this.showAlert();
@@ -85,6 +85,37 @@ export class RegisterQrPage {
       title: 'Ups!!',
       subTitle: msg,
       buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  tableNumber(){
+    let alert = this.alertCtrl.create({
+      title: 'Número de Mesa',
+      inputs: [
+        {
+          name: 'numero',
+          placeholder: 'Número de Mesa',
+          type:'number'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: data => {
+            console.log(data);
+            // this.ts.updateBeers(table.id,table.beerCount+Number(data.cantidad));
+            this.register(Number(data.numero));
+          }
+        }
+      ]
     });
     alert.present();
   }

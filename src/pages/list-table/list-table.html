@@ -32,10 +32,11 @@
   </ion-list>
 </ion-content> -->
 
-<ion-content>
+<ion-content >
   <div class="leaderboard">
     <ion-list>
-      <ion-item no-lines *ngFor="let table of allTables">
+      <ion-item no-lines *ngFor="let table of activeTables">
+        <ion-badge item-start color="light"> {{ table.numero }} </ion-badge>
         <mark>{{table.name}}</mark>
         <ion-icon name="remove-circle" item-end (click)="deleteBeer(table)" *ngIf="table.qrID"></ion-icon>
         <ion-icon name="add-circle" item-end (click)="addBeer(table)" *ngIf="table.qrID"></ion-icon>

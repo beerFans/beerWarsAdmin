@@ -29,6 +29,7 @@ export const ALL_TABLES_QUERY = gql`
       users {
         id
       }
+      numero
     }
   }
 `;
@@ -84,9 +85,10 @@ export interface CreateTableMutationResponse {
 }
 
 export const CREATE_QR_MUTATION = gql`
-  mutation CreateQRMutation ($description: String!){
+  mutation CreateQRMutation ($description: String!, $nroMesa: Int!){
     createQR(
-      description: $description
+      description: $description,
+      nroMesa: $nroMesa
     )
     {
       id,
@@ -231,6 +233,7 @@ export const NEW_TABLE_SUBSCRIPTION = gql`
         users {
           id
         }
+        numero
       }
     }
   }
@@ -329,4 +332,34 @@ export const CLOSE_TABLE_MUTATION = gql`
       id
     }
   }
-`
+`;
+
+export const CREATE_WINNERTABLE_MUTATION = gql`
+  mutation CreateWinnerTableMutation($name: String, $beerCount:Int, $picture:String ) {
+    createWinnerTable(
+      name:$name,
+      beerCount: $beerCount,
+      picture: $picture,
+    ) {
+      name
+      id
+      createdAt
+      beerCount
+      picture
+    }
+  }
+`;
+
+export const JOIN_WINNER_TABLE_MUTATION = gql`
+  mutation JoinWinnerTableMutation($userId: ID!, $tableId: ID!) {
+    addToTableWinner (
+      usersUserId: $userId,
+      winsWinnerTableId: $tableId,
+    )
+    {
+      usersUser {
+        id
+      }
+    }
+  }
+`;
